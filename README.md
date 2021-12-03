@@ -4,7 +4,7 @@ Example project demonstrating a crash when using a Mapbox map within a shared el
 
 ## Setup
 * Set your `MAPBOX_DOWNLOADS_TOKEN` in gradle.properties or as an environment variable.
-* Insert your Mapbox token in `MapboxCrashApplication`.
+* Insert your Mapbox token in `MapboxFragment`.
 * Run the app
 
 ## Transition Info

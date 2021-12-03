@@ -9,8 +9,11 @@ import androidx.core.app.SharedElementCallback
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.commit
 import com.google.android.material.transition.MaterialContainerTransform
-import com.mapbox.mapboxsdk.maps.Style
-import com.mapbox.mapboxsdk.maps.SupportMapFragment
+import com.mapbox.maps.Style
+import com.mapbox.maps.plugin.attribution.attribution
+import com.mapbox.maps.plugin.compass.compass
+import com.mapbox.maps.plugin.gestures.gestures
+import com.mapbox.maps.plugin.scalebar.scalebar
 import com.xspotlivin.mapboxcrash.databinding.FragmentMapBinding
 
 class MapFragment : Fragment(R.layout.fragment_map) {
@@ -42,14 +45,23 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         childFragmentManager.commit {
-            replace(R.id.mapContainer, SupportMapFragment.newInstance().apply {
+            replace(R.id.mapContainer, MapboxFragment.newInstance().apply {
                 getMapAsync { map ->
-                    with(map.uiSettings) {
-                        setAllGesturesEnabled(false)
-                        isCompassEnabled = false
-                        isAttributionEnabled = false
+                    with(getMapView()) {
+                        compass.enabled = false
+                        attribution.enabled = false
+                        scalebar.enabled = false
+
+                        // Why can't I just disable all gestures...
+                        gestures.scrollEnabled = false
+                        gestures.rotateEnabled = false
+                        gestures.pitchEnabled = false
+                        gestures.doubleTapToZoomInEnabled = false
+                        gestures.doubleTouchToZoomOutEnabled = false
+                        gestures.pinchToZoomEnabled = false
+                        gestures.quickZoomEnabled = false
                     }
-                    map.setStyle(Style.MAPBOX_STREETS)
+                    map.loadStyleUri(Style.MAPBOX_STREETS)
                 }
             })
         }
